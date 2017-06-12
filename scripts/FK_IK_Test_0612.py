@@ -53,19 +53,93 @@ def connectFunc():
 		return None
 
 def function_Test():
+	start_pnt = {}
+	start_pnt[1] = 90
+	start_pnt[2] = 90
+	start_pnt[3] = 60
+
+	pick_pnt1 = {}
+	pick_pnt1[1] = 90
+	pick_pnt1[2] = 55
+	pick_pnt1[3] = 85
+	#Pump on
+	lift_pnt1 = {}
+	lift_pnt1[1] = 90
+	lift_pnt1[2] = 90
+	lift_pnt1[3] = 60
+
+	lift_pnt2 = {}
+	lift_pnt2[1] = 155
+	lift_pnt2[2] = 90
+	lift_pnt2[3] = 60
+
+	lift_pnt3 = {}
+	lift_pnt3[1] = 155
+	lift_pnt3[2] = 55
+	lift_pnt3[3] = 80
+	#Pump off
+	hang_pnt1 = {}
+	hang_pnt1[1] = 155
+	hang_pnt1[2] = 90
+	hang_pnt1[3] = 60
+	#Sleep
+	
+	#Pump on
+	pick_pnt2 = {}
+	pick_pnt2[1] = 155
+	pick_pnt2[2] = 55
+	pick_pnt2[3] = 85
+
+	lift_pnt4 = {}
+	lift_pnt4[1] = 155
+	lift_pnt4[2] = 90
+	lift_pnt4[3] = 60
+
+	lift_pnt5 = {}
+	lift_pnt5[1] = 90
+	lift_pnt5[2] = 90
+	lift_pnt5[3] = 60
+
+	lift_pnt6 = {}
+	lift_pnt6[1] = 90
+	lift_pnt6[2] = 55
+	lift_pnt6[3] = 80
+	#Pump off
+	#Sleep
+
 	while loop_flag:
 		print "New test loop"
-		sleep(5)		
+		writeServoAngle(start_pnt)
+		sleep(3)
+		writeServoAngle(pick_pnt1)
 		pumpControl(1)
+		sleep(1)
+		writeServoAngle(lift_pnt1)
+		sleep(1)
+		writeServoAngle(lift_pnt2)
+		sleep(1)
+		writeServoAngle(lift_pnt3)
+		pumpControl(0)
+		sleep(1)
+		writeServoAngle(hang_pnt1)
 		sleep(5)
+		pumpControl(1)
+		writeServoAngle(pick_pnt2)
+		sleep(1)
+		writeServoAngle(lift_pnt4)
+		sleep(1)
+		writeServoAngle(lift_pnt5)
+		sleep(1)
+		writeServoAngle(lift_pnt6)
+		sleep(1)
 		pumpControl(0)
 
 ## Callbacks
 # angles control function once received data from topic
 def writeServoAngle(target_angles):
-	m_Uarm.set_servo_angle(0, target_angles[0])
-	m_Uarm.set_servo_angle(1, target_angles[1])
-	m_Uarm.set_servo_angle(2, target_angles[2])
+	m_Uarm.set_servo_angle(0, target_angles[1])
+	m_Uarm.set_servo_angle(1, target_angles[2])
+	m_Uarm.set_servo_angle(2, target_angles[3])
 	m_Uarm.set_servo_angle(3, 90)
 	print 'Movement: Moved Once'
 
@@ -214,25 +288,26 @@ if __name__ == '__main__':
 	# 	sleep(1)
 	# 	## Start ROS node
 	# 	# listener()
-	# 	angles = IK_func(0,12,10)
-	# 	print angles
+	# 	# angles = IK_func(0,12,10)
+	# 	# print angles
 	# 	## Testing Functions
-	# 	# function_Test()
+	# 	function_Test()
 	# except:
 	# 	print 'ERROR!'
 	# 	pass
 	# finally:
 	# 	print 'Program Stopped'
 	# 	pass
-		## Connecting Uarm
+		# Connecting Uarm
 
-	# connectFunc()
-	# sleep(1)
+	connectFunc()
+	sleep(1)
+	function_Test()
 	## Start ROS node
 	# listener()
 	# angles = IK_func(0,12,10)
 	# print angles
-	coords = FK_func(90,90,0)
+	# coords = FK_func(90,90,0)
 	# print coords
 
 	## Testing Functions
