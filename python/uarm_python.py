@@ -16,6 +16,7 @@ MATH_L2	= 2.117
 MATH_L3	= 14.825
 MATH_L4	= 16.02
 MATH_L43 = MATH_L4/MATH_L3
+MATH_SUCKER_L = 6
 
 # UARM OFFSETS
 TopOffset = -1.5
@@ -217,11 +218,25 @@ class Uarm(object):
 	def fwdKine(self,theta_1,theta_2,theta_3):
 		g_l3_1 = MATH_L3 * math.cos(theta_2/MATH_TRANS)
 		g_l4_1 = MATH_L4 * math.cos(theta_3 / MATH_TRANS);
-  		g_l5 = (MATH_L2 + MATH_L3*math.cos(theta_2 / MATH_TRANS) + MATH_L4*math.cos(theta_3 / MATH_TRANS));
+  		# g_l5 = (MATH_L2 + MATH_L3*math.cos(theta_2 / MATH_TRANS) + MATH_L4*math.cos(theta_3 / MATH_TRANS));
+  		g_l5 = (MATH_L2 + g_l3_1 + g_l4_1)
 
-		self.coord[1] = -math.cos(abs(theta_1 / MATH_TRANS))*g_l5;
-		self.coord[2] = -math.sin(abs(theta_1 / MATH_TRANS))*g_l5;
-		self.coord[3] = MATH_L1 + MATH_L3*math.sin(abs(theta_2 / MATH_TRANS)) - MATH_L4*math.sin(abs(theta_3 / MATH_TRANS));
+		# self.coord[1] = -math.cos(abs(theta_1 / MATH_TRANS))*g_l5;
+		# self.coord[2] = -math.sin(abs(theta_1 / MATH_TRANS))*g_l5;
+		# self.coord[3] = MATH_L1 + MATH_L3*math.sin(abs(theta_2 / MATH_TRANS)) - MATH_L4*math.sin(abs(theta_3 / MATH_TRANS));			
+
+		## Using right hand coordinate sys
+		self.coord[1] = math.sin(abs(theta_1 / MATH_TRANS))*g_l5;
+		self.coord[2] = math.cos(abs(theta_1 / MATH_TRANS))*g_l5;	
+		self.coord[3] = MATH_L1 + MATH_L3*math.sin(abs(theta_2 / MATH_TRANS)) - MATH_L4*math.sin(abs(theta_3 / MATH_TRANS))- MATH_SUCKER_L;
+
+		print "Calling FK with following joint Values:"
+		print theta_1
+		print theta_2
+		print theta_3
+		print "Setting to x y z"
+		print self.coord
+
 		return self.coord
 
 
@@ -306,9 +321,10 @@ class Uarm(object):
 	def ivsKine(self, x, y, z):
 		if z > (MATH_L1 + MATH_L3 + TopOffset):
 			z = MATH_L1 + MATH_L3 + TopOffset
-		if z < (MATH_L1 - MATH_L4 + BottomOffset):
-			z = MATH_L1 - MATH_L4 + BottomOffset
-
+		# if z < (MATH_L1 - MATH_L4 + BottomOffset):
+		# 	z = MATH_L1 - MATH_L4 + BottomOffset
+		if z < 0:
+			z = 0
 		g_y_in = (-y-MATH_L2)/MATH_L3
 		g_z_in = (z - MATH_L1) / MATH_L3
 		g_right_all = (1 - g_y_in*g_y_in - g_z_in*g_z_in - MATH_L43*MATH_L43) / (2 * MATH_L43)

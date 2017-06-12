@@ -36,11 +36,18 @@ from uarm.msg import CoordsWithTS4
 # Read current Coords function
 def readCurrentCoords():
 	cc = uarm.get_position()
-	print 'Current location is x: %2.2fcm, y: %2.2fcm, z: %2.2fcm.' %(float(cc[0]), float(cc[1]), float(cc[2]))
-
-	rospy.set_param('current_x', cc[0])
-	rospy.set_param('current_y', float(cc[1]))
-	rospy.set_param('current_z', float(cc[2]))
+	# print 'Current location is x: %2.2fcm, y: %2.2fcm, z: %2.2fcm.' %(float(cc[0]), float(cc[1]), float(cc[2]))
+	# rospy.set_param('current_x', cc[0])
+	# rospy.set_param('current_y', float(cc[1]))
+	# rospy.set_param('current_z', float(cc[2]))
+	# float c_x c_y c_z
+	c_x = float(cc[0])/100
+	c_y = float(cc[1])/100+3.5
+	c_z = float(cc[2])/100-6
+	rospy.set_param('current_x', c_x)
+	rospy.set_param('current_y', c_y)
+	rospy.set_param('current_z', c_z)	
+	print 'Current location is x: %2.2fcm, y: %2.2fcm, z: %2.2fcm.' %(c_x, c_y, c_z)
 
 # Read current Angles function
 def readCurrentAngles():

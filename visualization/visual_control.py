@@ -237,6 +237,9 @@ if __name__=="__main__":
     ini_x = -rospy.get_param('current_x')/100
     ini_y = -rospy.get_param('current_y')/100
     ini_z = rospy.get_param('current_z')/100
+    print ini_x
+    print ini_y
+    print ini_z
     time.sleep(1)
 
     position = Point( float(ini_x), float(ini_y), float(ini_z))
